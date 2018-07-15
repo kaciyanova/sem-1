@@ -1,3 +1,3 @@
-![Build Status](https://travis-ci.org/kevin-chalmers/sem.svg?branch=master)
+# Software Engineering Methods
 
-SE Methods README.
+- Master Build Status [![Build Status](https://travis-ci.org/kevin-chalmers/sem.svg?branch=master)](https://travis-ci.org/kevin-chalmers/sem)
