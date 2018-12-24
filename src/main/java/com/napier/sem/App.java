@@ -52,7 +52,7 @@ public class App
                 // Close connection
                 con.close();
             }
-            catch (SQLException sqle)
+            catch (Exception e)
             {
                 System.out.println("Error closing connection to database");
             }
