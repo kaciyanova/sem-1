@@ -1,9 +1,14 @@
-sudo: required
-
 language: java
+jdk: oraclejdk8
 
-services:
-  - docker
+install: true
+script:
+  - "mvn cobertura:cobertura"
+  - ./mvnw clean install
+
+cache:
+  directories:
+    - $HOME/.m2
 
 after_success:
-  - docker-compose up --abort-on-container-exit
+  - bash <(curl -s https://codecov.io/bash) -t $CODECOV_TOKEN
