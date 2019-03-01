@@ -4,7 +4,7 @@ jdk: oraclejdk8
 install: true
 script:
   - "mvn cobertura:cobertura"
-  - ./mvnw clean install
+  - mvn clean install
 
 cache:
   directories:
