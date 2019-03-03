@@ -29,7 +29,9 @@ jobs:
     - stage: deploy
       install: skip
       jdk: oraclejdk11
-      script: docker-compose up --abort-on-container-exit
+      script:
+        - maven package
+        - docker-compose up --abort-on-container-exit
 
 stages:
   - unit tests
