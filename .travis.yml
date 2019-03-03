@@ -16,10 +16,9 @@ before_script:
 jobs:
   include:
     - stage: unit tests
-      jdk:
-        - oraclejdk8
-        - oraclejdk9
-        - oraclejdk10
+      - jdk: oraclejdk8
+      - jdk: oraclejdk9
+      - jdk: oraclejdk10
       script: mvn test -Dtest=com.napier.sem.AppTest
     - stage: integration tests
       jdk:
