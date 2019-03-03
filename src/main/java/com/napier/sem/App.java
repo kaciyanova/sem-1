@@ -327,4 +327,9 @@ public class App
             return null;
         }
     }
+
+    public void addEmployee(Employee emp)
+    {
+
+    }
 }
