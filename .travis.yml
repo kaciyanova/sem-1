@@ -30,7 +30,7 @@ jobs:
       install: skip
       jdk: oraclejdk11
       script:
-        - maven package
+        - mvn package
         - docker-compose up --abort-on-container-exit
 
 stages:
