@@ -1,13 +1,20 @@
 language: java
 jdk: oraclejdk8
 
-install: true
-script:
-  - "mvn cobertura:cobertura"
+services:
+  - docker
 
-cache:
-  directories:
-    - $HOME/.m2
+sudo: false
 
-after_success:
-  - bash <(curl -s https://codecov.io/bash) -t $CODECOV_TOKEN
+install:
+  - docker build -t database db/.
+  - docker run --rm -e MYSQL_ROOT_PASSWORD=example -p 3306:3306 database
+  - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+
+before_script:
+  - mvn clean
+
+jobs:
+  include:
+    - stage: unit tests
+      script: mvn test -Dtest=com.napier.sem.AppTest
