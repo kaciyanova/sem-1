@@ -2,12 +2,16 @@ language: java
 
 sudo: false
 
+addons:
+  hosts:
+    - db
+
 services:
   - docker
 
 install:
   - docker build -t database db/.
-  - docker run --rm -d -e MYSQL_ROOT_PASSWORD=example -p 127.0.0.1:33060:3306 database
+  - docker run --rm -d -e MYSQL_ROOT_PASSWORD=example -p 33060:3306 database
   - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 
 before_script:
@@ -16,10 +20,12 @@ before_script:
 jobs:
   include:
     - stage: unit tests
+      install: false
       jdk: oraclejdk11
-      script:
-        - mvn test -Dtest=com.napier.sem.AppTest
-        - echo 1
+      script: mvn test -Dtest=com.napier.sem.AppTest
     - stage: integration tests
       jdk: oraclejdk11
       script: mvn test -Dtest=com.napier.sem.AppIntegrationTest
+    - stage: deploy
+      jdk: oraclejdk11
+      script: docker-compose up --abort-on-container-exit
