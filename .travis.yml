@@ -4,8 +4,6 @@ jdk: oraclejdk8
 services:
   - docker
 
-sudo: false
-
 install:
   - docker build -t database db/.
   - docker run --rm -e MYSQL_ROOT_PASSWORD=example -p 3306:3306 database
