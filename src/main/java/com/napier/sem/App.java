@@ -242,7 +242,7 @@ public class App
         App a = new App();
 
         // Connect to database
-        a.connect("localhost:33060");
+        a.connect("localhost:3306");
 
         Department dept = a.getDepartment("Sales");
         ArrayList<Employee> employees = a.getSalariesByDepartment(dept);
