@@ -23,7 +23,7 @@ jobs:
       install: skip
       jdk: oraclejdk8
       script:
-        - mvn cobertura:cobertura -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+        - mvn compile -DskipTests=true -Dmaven.javadoc.skip=true
         - bash <(curl -s https://codecov.io/bash)
     - stage: unit tests
       install: skip
