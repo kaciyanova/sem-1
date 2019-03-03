@@ -13,7 +13,7 @@ public class App
     /**
      * Connect to the MySQL database.
      */
-    public void connect()
+    public void connect(String address)
     {
         try
         {
@@ -35,7 +35,7 @@ public class App
                 // Wait a bit for db to start
                 Thread.sleep(30000);
                 // Connect to database
-                con = DriverManager.getConnection("jdbc:mysql://db:3306/employees?useSSL=false", "root", "example");
+                con = DriverManager.getConnection("jdbc:mysql://" + address + "/employees?useSSL=false", "root", "example");
                 System.out.println("Successfully connected");
                 break;
             }
@@ -242,7 +242,7 @@ public class App
         App a = new App();
 
         // Connect to database
-        a.connect();
+        a.connect("db:3306");
 
         Department dept = a.getDepartment("Sales");
         ArrayList<Employee> employees = a.getSalariesByDepartment(dept);
