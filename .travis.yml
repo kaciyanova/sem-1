@@ -21,7 +21,7 @@ jobs:
   include:
     - stage: code coverage
       install: skip
-      jdk: oraclejdk8
+      jdk: oraclejdk11
       script:
         - mvn compile -DskipTests=true -Dmaven.javadoc.skip=true
         - bash <(curl -s https://codecov.io/bash)
@@ -44,7 +44,3 @@ stages:
   - integration tests
   - name: deploy
     if: branch = master
-
-after_success:
-  - mvn cobertura:cobertura
-  - bash
