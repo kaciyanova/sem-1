@@ -26,12 +26,14 @@ jobs:
     - stage: integration tests
       jdk: oraclejdk11
       script: mvn test -Dtest=com.napier.sem.AppIntegrationTest
-    - stage: deploy
-      install: skip
-      jdk: oraclejdk11
-      script:
-        - mvn package -DskipTests=true -Dmaven.javadoc.skip=true
-        - docker-compose up --abort-on-container-exit
+    - stage: GitHub Release
+      script: echo "Deploying to GitHub releases"
+      deploy:
+        provider: releases
+        api_key: $GITHUB_OAUTH_TOKEN
+        skip_cleanup: true
+        on:
+          tags: true
 
 stages:
   - unit tests
