@@ -27,7 +27,9 @@ jobs:
       jdk: oraclejdk11
       script: mvn test -Dtest=com.napier.sem.AppIntegrationTest
     - stage: GitHub Release
-      script: echo "Deploying to GitHub releases"
+      script:
+      - echo "Deploying to GitHub releases"
+      - mvn package
       deploy:
         provider: releases
         api_key: $GITHUB_OAUTH_TOKEN
@@ -39,6 +41,8 @@ jobs:
 stages:
   - unit tests
   - integration tests
+  - name: GitHub Release
+    if: branch = release
   - name: deploy
     if: branch = master
 
