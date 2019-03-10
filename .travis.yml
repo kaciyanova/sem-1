@@ -44,7 +44,7 @@ stages:
   - unit tests
   - integration tests
   - name: GitHub Release
-    if: branch = release
+    if: branch = master
   - name: deploy
     if: branch = master
 
