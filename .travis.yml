@@ -37,12 +37,14 @@ jobs:
         api_key: $GITHUB_OAUTH_TOKEN
         file: seMethods.jar
         skip_cleanup: true
+        on:
+          tags: true
 
 stages:
   - unit tests
   - integration tests
   - name: GitHub Release
-    if: branch = release
+    if: branch = master
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
