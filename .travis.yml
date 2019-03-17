@@ -89,12 +89,18 @@ jobs:
       - docker build -t gcr.io/${PROJECT_ID}/db db/.
       # Push the database image.
       - docker push gcr.io/${PROJECT_ID}/db
+      # Build the application image
+      - docker build -t gcr.io/${PROJECT_ID}/app .
+      # Push the application image.
+      - docker push gcr.io/${PROJECT_ID}/app
       # Create a container cluster.  We only need one node.
       - gcloud container clusters create hr-cluster --num-nodes=1
       # Tell kubernetes to run the built database image, opening port 3306
-      - kubectl run hr --image=gcr.io/${PROJECT_ID}/db --port 3306
-      # Expose the cluster to the Internet, mapping external port 3306 to internal port 3306.
-      - kubectl expose deployment hr --port=3306 --target-port=3306 --type=LoadBalancer
+      - kubectl run db --image=gcr.io/${PROJECT_ID}/db --port 3306
+      # Tell kubernetes to run the build application image, opening port 8080
+      - kubectl run app --image=gcr.io/${PROJECT_ID}/app --port 8080
+      # Expose the app to the Internet, mapping external port 3306 to internal port 3306.
+      - kubectl expose deployment app --port=80 --target-port=8080 --type=LoadBalancer
 
 stages:
 - unit tests
@@ -109,6 +115,7 @@ after_success:
 - bash <(curl -s https://codecov.io/bash)
 
 before_install:
-# Decrypts the credentials file
+# Decrypts the credentials file.
+# The keyname will be different for your project.
 - openssl aes-256-cbc -K $encrypted_b295e594d102_key -iv $encrypted_b295e594d102_iv
   -in client-secret.json.enc -out client-secret.json -d

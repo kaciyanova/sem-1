@@ -1,19 +1,27 @@
 package com.napier.sem;
 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import java.sql.*;
 import java.util.ArrayList;
 
+@SpringBootApplication
+@RestController
 public class App
 {
     /**
      * Connection to MySQL database.
      */
-    private Connection con = null;
+    private static Connection con = null;
 
     /**
      * Connect to the MySQL database.
      */
-    public void connect(String location)
+    public static void connect(String location)
     {
         try
         {
@@ -54,7 +62,7 @@ public class App
     /**
      * Disconnect from the MySQL database.
      */
-    public void disconnect()
+    public static void disconnect()
     {
         if (con != null)
         {
@@ -75,7 +83,8 @@ public class App
      * @param ID emp_no of the employee record to get.
      * @return The record of the employee with emp_no or null if no employee exists.
      */
-    public Employee getEmployee(int ID)
+    @RequestMapping("/employee")
+    public Employee getEmployee(@RequestParam(value="id") String ID)
     {
         try
         {
@@ -109,28 +118,10 @@ public class App
     }
 
     /**
-     * Displays a single Employee record.
-     * @param emp The employee record to display.
-     */
-    public void displayEmployee(Employee emp)
-    {
-        if (emp != null)
-        {
-            System.out.println(
-                    emp.emp_no + " "
-                    + emp.first_name + " "
-                    + emp.last_name + "\n"
-                    + emp.title + "\n"
-                    + "Salary: " + emp.salary + "\n"
-                    + emp.dept.dept_name + "\n"
-                    + "Manager: " + emp.manager + "\n");
-        }
-    }
-
-    /**
      * Gets all the current employees and salaries.
      * @return A list of all employees and salaries, or null if there is an error.
      */
+    @RequestMapping("salaries")
     public ArrayList<Employee> getAllSalaries()
     {
         try
@@ -171,7 +162,8 @@ public class App
      * @param title The name of the department
      * @return A list of employees and salaries, or null if there is an error.
      */
-    public ArrayList<Employee> getSalariesByTitle(String title)
+    @RequestMapping("salaries_title")
+    public ArrayList<Employee> getSalariesByTitle(@RequestParam(value="title") String title)
     {
         try
         {
@@ -210,58 +202,23 @@ public class App
         }
     }
 
-    /**
-     * Prints a list of employees.
-     * @param employees The list of employees to print.
-     */
-    public void printSalaries(ArrayList<Employee> employees)
-    {
-        // Check employees is not null
-        if (employees == null)
-        {
-            System.out.println("No employees");
-            return;
-        }
-        // Print header
-        System.out.println(String.format("%-10s %-15s %-20s %-8s", "Emp No", "First Name", "Last Name", "Salary"));
-        // Loop over all employees in the list
-        for (Employee emp : employees)
-        {
-            if (emp == null)
-                continue;
-            String emp_string =
-                    String.format("%-10s %-15s %-20s %-8s",
-                            emp.emp_no, emp.first_name, emp.last_name, emp.salary);
-            System.out.println(emp_string);
-        }
-    }
-
     public static void main(String[] args)
     {
-        // Create new Application
-        App a = new App();
-
         // Connect to database
         if (args.length < 1)
         {
-            a.connect("localhost:3306");
+            connect("localhost:33060");
         }
         else
         {
-            a.connect(args[0]);
+            connect(args[0]);
         }
 
-        Department dept = a.getDepartment("Sales");
-        ArrayList<Employee> employees = a.getSalariesByDepartment(dept);
-
-        // Print salary report
-        a.printSalaries(employees);
-
-        // Disconnect from database
-        a.disconnect();
+        SpringApplication.run(App.class, args);
     }
 
-    public Department getDepartment(String dept_name)
+    @RequestMapping("department")
+    public Department getDepartment(@RequestParam(value="dept") String dept_name)
     {
         try
         {
@@ -289,7 +246,8 @@ public class App
         }
     }
 
-    public ArrayList<Employee> getSalariesByDepartment(Department dept)
+    @RequestMapping("salaries_department")
+    public ArrayList<Employee> getSalariesByDepartment(@RequestParam(value="dept") String dept)
     {
         try
         {
@@ -303,7 +261,7 @@ public class App
                             "AND employees.emp_no = dept_emp.emp_no\n" +
                             "AND dept_emp.dept_no = departments.dept_no\n" +
                             "AND salaries.to_date = '9999-01-01'\n" +
-                            "AND departments.dept_no = '" + dept.dept_no + "'\n" +
+                            "AND departments.dept_no = '" + dept + "'\n" +
                             "ORDER BY employees.emp_no ASC";
             // Execute SQL statement
             ResultSet rset = stmt.executeQuery(strSelect);
