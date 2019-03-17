@@ -31,8 +31,8 @@
 </body>
 
 <script>
-    $.getJSON('/app/employee?id=10002', function(data) {
-        $(".mypanel").html(data)
+    $.getJSON(window.location.hostname + '/app/employee?id=10002', function(data) {
+        $(".mypanel").html("<p>" + data + "</p>");
     });
 </script>
 
