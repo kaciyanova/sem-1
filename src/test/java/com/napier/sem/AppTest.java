@@ -17,4 +17,10 @@ public class AppTest
     {
         app = new App();
     }
+
+    @Test
+    void check()
+    {
+        assertEquals(5, 5);
+    }
 }
