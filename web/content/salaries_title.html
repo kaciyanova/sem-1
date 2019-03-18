@@ -31,7 +31,7 @@
     var urlParams = new URLSearchParams(window.location.search);
     var title = urlParams.get('title');
 
-    var URL = "http://" + window.location.hostname + "/app/salaries_title?id=" + title;
+    var URL = "http://" + window.location.hostname + "/app/salaries_title?title=" + title;
 
     $(".showData").html(URL);
 
