@@ -33,6 +33,8 @@
 
     var URL = "http://" + window.location.hostname + "/app/employee?id=" + id;
 
+    $(".showData").html(URL);
+
     $.getJSON(URL, function(data) {
         // EXTRACT VALUE FOR HTML HEADER.
         var col = [];
