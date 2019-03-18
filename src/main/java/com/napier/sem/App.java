@@ -83,7 +83,7 @@ public class App
      * @param ID emp_no of the employee record to get.
      * @return The record of the employee with emp_no or null if no employee exists.
      */
-    @RequestMapping("/employee")
+    @RequestMapping("employee")
     public Employee getEmployee(@RequestParam(value="id") String ID)
     {
         try
