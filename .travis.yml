@@ -14,6 +14,7 @@ env:
 services:
 - docker
 
+
 install:
 # Build database image.
 - docker build -t database db/.
